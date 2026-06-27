@@ -46,7 +46,7 @@ const userSchema = new Schema(
             type: String,
         },
         forgotPasswordToken: {
-            type: true,
+            type: String,
         },
         forgotPasswordExpiry: {
             type: Date,
@@ -63,11 +63,11 @@ const userSchema = new Schema(
     }
 )
 
-userSchema.pre("save", async function (next) { // arrow fn does not have their own this so we ave to use normal fn
-    if(!this.isModified("password")) return next() // we have to encrypt the password one time only if we don't use this code then password will be encrypted everytime with a new value whenever user press save
+userSchema.pre('save', async function () { // arrow fn does not have their own this so we ave to use normal fn
+    if(!this.isModified("password")) return  // we have to encrypt the password one time only if we don't use this code then password will be encrypted everytime with a new value whenever user press save
 
     this.password = await bcrypt.hash(this.password, 10)
-    next()
+    
 })
 
 userSchema.methods.isPasswordCorrect = async function (password) {
