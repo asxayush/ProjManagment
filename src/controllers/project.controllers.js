@@ -336,4 +336,5 @@ export{
     getProjects,
     updateProject,
     updateMembersRole,
+    deleteProject,
 }

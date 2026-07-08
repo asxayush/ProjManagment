@@ -32,7 +32,7 @@ export const verifyJWT = asyncHandler(async (req, res, next) => {
 })
 
 export const validateProjectPermission = (roles = []) => {
-    asyncHandler(async (req, res, next) => {
+  return  asyncHandler(async (req, res, next) => {
         const {projectId} =  req.params
 
         if(!projectId){
@@ -40,8 +40,8 @@ export const validateProjectPermission = (roles = []) => {
         }
 
        const project =  await ProjectMember.findOne({
-            project: new Mongoose.Types.ObjectId(projectId),
-            user: new Mongoose.Types.ObjectId(req.user_id)
+            project: new mongoose.Types.ObjectId(projectId),
+            user: new mongoose.Types.ObjectId(req.user._id)
         })
 
         if(!project){

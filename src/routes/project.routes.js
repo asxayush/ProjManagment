@@ -8,6 +8,7 @@ import {
     getProjects,
     updateProject,
     updateMembersRole,
+    deleteProject
 }
     from "../controllers/project.controllers.js"
 
@@ -36,7 +37,7 @@ router
  .post(createProjectValidator(), validate, createProject)
 
  router
- .route(":projectId")
+ .route("/:projectId")
  .get(validateProjectPermission(AvailableUserRole), getProjectById)
  .put(
     validateProjectPermission([UserRolesEnum.ADMIN]),
