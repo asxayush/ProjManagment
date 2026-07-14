@@ -11,7 +11,22 @@ import { MIMEType } from "util"
 
 
 const getTasks = asyncHandler(async(req, res) => {
-  
+    const {projectId} = req.params
+    const project = await Project.findById(projectId)
+
+    if(!project){
+        throw new ApiError(404, "project not found")
+    }
+   const tasks =  await Task.find({
+        project: new mongoose.Types.ObjectId(projectId)
+    }).populate("assignedTo", "avatar username fullName")
+
+     return res
+        .status(200)
+        .json(
+            new ApiResponse(201, tasks, "Task fetched successfully")
+        )
+
 })
 const createTasks = asyncHandler(async(req, res) => {
     const {title, description, assignedTo, status} = req.body
@@ -30,25 +45,41 @@ const createTasks = asyncHandler(async(req, res) => {
         }
     })
 
-    const task = await Task.create({})
+    const task = await Task.create({
+        title,
+        description,
+        project: new mongoose.Types.ObjectId(projectId),
+        assignedTo: assignedTo?new mongoose.Types.ObjectId(assignedTo): undefined,
+        status,
+        assignedBy: new mongoose.Types.ObjectId(req.user._id),
+        attachments
+
+       
+    })
+
+     return res
+        .status(200)
+        .json(
+            new ApiResponse(201, task, "Task created successfully")
+        )
 })
 const getTaskById = asyncHandler(async(req, res) => {
-    //chai
+    
 })
 const updateTask = asyncHandler(async(req, res) => {
-    //chai
+    
 })
 const deleteTasks = asyncHandler(async(req, res) => {
-    //chai
+    
 })
 const createSubTask = asyncHandler(async(req, res) => {
-    //chai
+    
 })
 const updateSubTask = asyncHandler(async(req, res) => {
-    //chai
+    
 })
 const deleteSubTask = asyncHandler(async(req, res) => {
-    //chai
+    
 })
 
 
